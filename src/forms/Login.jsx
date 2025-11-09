@@ -1,7 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleIcon from "../assets/Icon_Google.png";
+import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const { user, login, googleLogin } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  console.log(user);
+
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+      toast.success("Google login successful!");
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center border-b border-gray-200 bg-gray-50 px-4 py-20">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
@@ -66,6 +84,7 @@ const Login = () => {
         <button
           type="button"
           className="w-full flex items-center justify-center text-gray-700 border border-gray-300 py-2 rounded-md hover:bg-gray-100 transition"
+          onClick={handleGoogleLogin}
         >
           <img src={GoogleIcon} alt="Google" className="w-6 h-6 mr-2" />
           Sign in with Google
