@@ -10,6 +10,7 @@ import CreatePartnerProfile from "./forms/CreatePartnerProfile.jsx";
 import FindPartners from "./pages/FindPartners.jsx";
 import MyConnections from "./pages/MyConnections.jsx";
 import PartnerDetails from "./pages/PartnerDetails.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 const Layout = () => {
   return (
     <>
@@ -21,19 +22,21 @@ const Layout = () => {
 };
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* prettier-ignore */}
-        <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
-        <Route path="/find-partners" element={<FindPartners />} />
-        <Route path="/my-connections" element={<MyConnections />} />
-        <Route path="/partner/:id" element={<PartnerDetails />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/* prettier-ignore */}
+          <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
+          <Route path="/find-partners" element={<FindPartners />} />
+          <Route path="/my-connections" element={<MyConnections />} />
+          <Route path="/partner/:id" element={<PartnerDetails />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 
