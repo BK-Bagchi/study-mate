@@ -9,7 +9,6 @@ const sampleConnections = [
     profileImage: Avatar,
     subject: "Mathematics",
     studyMode: "Online",
-    experienceLevel: "Intermediate",
   },
   {
     id: 2,
@@ -17,7 +16,6 @@ const sampleConnections = [
     profileImage: Avatar,
     subject: "English",
     studyMode: "Offline",
-    experienceLevel: "Beginner",
   },
   {
     id: 3,
@@ -25,7 +23,6 @@ const sampleConnections = [
     profileImage: Avatar,
     subject: "Programming",
     studyMode: "Online",
-    experienceLevel: "Expert",
   },
 ];
 
@@ -46,7 +43,7 @@ const MyConnections = () => {
     <div className="py-12 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <h2 className="text-3xl font-bold text-blue-600 mb-8 text-center">
-          My Connections
+          My Connections (whom i have requested to study with)
         </h2>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -56,7 +53,6 @@ const MyConnections = () => {
                 <th className="px-4 py-2 text-left">Partner</th>
                 <th className="px-4 py-2 text-left">Subject</th>
                 <th className="px-4 py-2 text-left">Study Mode</th>
-                <th className="px-4 py-2 text-left">Experience</th>
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
@@ -75,9 +71,6 @@ const MyConnections = () => {
                   </td>
                   <td className="px-4 py-3 text-gray-700">{conn.subject}</td>
                   <td className="px-4 py-3 text-gray-700">{conn.studyMode}</td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {conn.experienceLevel}
-                  </td>
                   <td className="px-4 py-3 flex justify-center gap-2">
                     <button
                       onClick={() => handleUpdate(conn.id)}
