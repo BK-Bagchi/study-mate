@@ -1,14 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import GoogleIcon from "../assets/Icon_Google.png";
 import { useAuth } from "../hooks/useAuth";
+import { registerSchema } from "../validations/userValidation";
 
 const Register = () => {
-  const { register, googleLogin } = useAuth();
+  const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
+  //prettier-ignore
+  const { register, handleSubmit, formState: { errors, isSubmitting },} = useForm({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onRegister = async (data) => {
+    console.log(data);
+  };
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
@@ -26,7 +37,7 @@ const Register = () => {
           Create Your StudyMate Account
         </h2>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit(onRegister)}>
           <div>
             <label
               htmlFor="name"
@@ -36,11 +47,14 @@ const Register = () => {
             </label>
             <input
               type="text"
-              id="name"
+              {...register("name")}
               placeholder="Your full name"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
           </div>
 
           <div>
@@ -52,11 +66,14 @@ const Register = () => {
             </label>
             <input
               type="email"
-              id="email"
+              {...register("email")}
               placeholder="you@example.com"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -68,10 +85,13 @@ const Register = () => {
             </label>
             <input
               type="url"
-              id="photo"
+              {...register("photoURL")}
               placeholder="https://yourphoto.com/photo.jpg"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            {errors.photoURL && (
+              <p className="text-red-500 text-sm">{errors.photoURL.message}</p>
+            )}
           </div>
 
           <div>
@@ -83,14 +103,14 @@ const Register = () => {
             </label>
             <input
               type="password"
-              id="password"
+              {...register("password")}
               placeholder="Enter a strong password"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
-            <p className="text-sm text-gray-500 mt-1">
-              Must contain uppercase, lowercase & minimum 6 characters
-            </p>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
           </div>
 
           <div>
@@ -102,21 +122,23 @@ const Register = () => {
             </label>
             <input
               type="password"
-              id="confirm-password"
+              {...register("confirmPassword")}
               placeholder="Enter a strong password"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
-            <p className="text-sm text-gray-500 mt-1">
-              Must contain uppercase, lowercase & minimum 6 characters
-            </p>
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition"
           >
-            Register
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
         </form>
 
