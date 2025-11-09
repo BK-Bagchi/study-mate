@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home.jsx";
 import Register from "./forms/Register.jsx";
 import Login from "./forms/login.jsx";
 import CreatePartnerProfile from "./forms/CreatePartnerProfile.jsx";
+import FindPartners from "./pages/FindPartners.jsx";
 const Layout = () => {
   return (
     <>
@@ -23,10 +24,9 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/create-partner-profile"
-          element={<CreatePartnerProfile />}
-        />
+        {/* prettier-ignore */}
+        <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
+        <Route path="/find-partners" element={<FindPartners />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
