@@ -12,6 +12,7 @@ import MyConnections from "./pages/MyConnections.jsx";
 import PartnerDetails from "./pages/PartnerDetails.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import PrivateRoute from "./routes/privateRoute.jsx";
+import { ToastContainer } from "react-toastify";
 const Layout = () => {
   return (
     <>
@@ -39,6 +40,18 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </AuthProvider>
   );
 }
