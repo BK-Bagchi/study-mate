@@ -8,6 +8,7 @@ import Register from "./forms/Register.jsx";
 import Login from "./forms/login.jsx";
 import CreatePartnerProfile from "./forms/CreatePartnerProfile.jsx";
 import FindPartners from "./pages/FindPartners.jsx";
+import MyConnections from "./pages/MyConnections.jsx";
 const Layout = () => {
   return (
     <>
@@ -27,6 +28,7 @@ function App() {
         {/* prettier-ignore */}
         <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
         <Route path="/find-partners" element={<FindPartners />} />
+        <Route path="/my-connections" element={<MyConnections />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

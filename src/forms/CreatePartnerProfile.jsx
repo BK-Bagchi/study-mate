@@ -3,6 +3,7 @@ import { useState } from "react";
 const CreatePartnerProfile = () => {
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     profileImage: "",
     subject: "",
     studyMode: "Online",
@@ -10,6 +11,7 @@ const CreatePartnerProfile = () => {
     location: "",
     experienceLevel: "Beginner",
     rating: 0,
+    partnerCount: 0,
   });
 
   const handleChange = (e) => {
@@ -43,6 +45,20 @@ const CreatePartnerProfile = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              onChange={handleChange}
+              value={formData.email}
+              className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
 
@@ -146,6 +162,19 @@ const CreatePartnerProfile = () => {
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               min="0"
               max="5"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Partner Count
+            </label>
+            <input
+              type="number"
+              name="partnerCount"
+              value={formData.partnerCount}
+              readOnly
+              className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md bg-gray-100 cursor-not-allowed"
             />
           </div>
 
