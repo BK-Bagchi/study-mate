@@ -11,6 +11,7 @@ import FindPartners from "./pages/FindPartners.jsx";
 import MyConnections from "./pages/MyConnections.jsx";
 import PartnerDetails from "./pages/PartnerDetails.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import PrivateRoute from "./routes/privateRoute.jsx";
 const Layout = () => {
   return (
     <>
@@ -28,11 +29,13 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* prettier-ignore */}
-          <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
-          <Route path="/find-partners" element={<FindPartners />} />
-          <Route path="/my-connections" element={<MyConnections />} />
-          <Route path="/partner/:id" element={<PartnerDetails />} />
+          <Route element={<PrivateRoute />}>
+            {/* prettier-ignore */}
+            <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
+            <Route path="/find-partners" element={<FindPartners />} />
+            <Route path="/my-connections" element={<MyConnections />} />
+            <Route path="/partner/:id" element={<PartnerDetails />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
