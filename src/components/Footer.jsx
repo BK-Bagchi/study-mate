@@ -2,9 +2,8 @@ import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 mt-10">
+    <footer className="bg-gray-100 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-10 md:px-8">
-        {/* Top Section: Logo + Description */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 md:gap-0">
           <div className="flex flex-col gap-3">
             <h1 className="text-2xl font-bold text-blue-600 tracking-wide">
@@ -17,7 +16,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Social Media */}
           <div className="flex flex-col gap-2">
             <h2 className="text-gray-800 font-semibold">Follow Us</h2>
             <div className="flex gap-4 mt-2">
@@ -49,7 +47,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Section: Copyright */}
         <div className="mt-8 border-t border-gray-300 pt-4 text-center text-gray-600 text-sm">
           © {new Date().getFullYear()} StudyMate. All rights reserved.
         </div>
