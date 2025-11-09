@@ -1,15 +1,24 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import GoogleIcon from "../assets/Icon_Google.png";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import { loginSchema } from "../validations/userValidation";
 
 const Login = () => {
-  const { user, login, googleLogin } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  console.log(user);
 
+  //prettier-ignore
+  const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({ 
+      resolver: zodResolver(loginSchema) 
+  });
+  const onLogin = async (data) => {
+    console.log(data);
+  };
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
@@ -29,7 +38,7 @@ const Login = () => {
         </h2>
 
         {/* Login Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit(onLogin)}>
           <div>
             <label
               htmlFor="email"
@@ -39,11 +48,14 @@ const Login = () => {
             </label>
             <input
               type="email"
-              id="email"
+              {...register("email")}
               placeholder="you@example.com"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -55,11 +67,14 @@ const Login = () => {
             </label>
             <input
               type="password"
-              id="password"
+              {...register("password")}
               placeholder="Enter your password"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
             <p className="text-sm text-right text-blue-600 my-3 hover:underline cursor-pointer">
               Forgot your password?
             </p>
@@ -69,7 +84,7 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition"
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </form>
 
