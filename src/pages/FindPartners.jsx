@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import Avatar from "../assets/Default_Avatar.jpeg";
 
@@ -9,27 +8,24 @@ const samplePartners = [
     name: "Aisha Rahman",
     profileImage: Avatar,
     subject: "Mathematics",
+    studyMode: "Online",
     experienceLevel: "Intermediate",
-    rating: 4.5,
-    skill: "Algebra, Calculus",
   },
   {
     id: 2,
     name: "John Doe",
     profileImage: Avatar,
     subject: "English",
+    studyMode: "Online",
     experienceLevel: "Beginner",
-    rating: 4.0,
-    skill: "Grammar, Writing",
   },
   {
     id: 3,
     name: "Sara Khan",
     profileImage: Avatar,
     subject: "Programming",
+    studyMode: "Online",
     experienceLevel: "Expert",
-    rating: 5.0,
-    skill: "JavaScript, React",
   },
 ];
 
@@ -58,14 +54,6 @@ const FindPartners = () => {
 
         {/* Search & Sort */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-          <input
-            type="text"
-            placeholder="Search by subject..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-1/2"
-          />
-
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
@@ -78,6 +66,14 @@ const FindPartners = () => {
             <option value="Intermediate">Intermediate</option>
             <option value="Expert">Expert</option>
           </select>
+
+          <input
+            type="text"
+            placeholder="Search by subject..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-1/2"
+          />
         </div>
 
         {/* Partner Cards */}
@@ -97,11 +93,12 @@ const FindPartners = () => {
                   {partner.name}
                 </h3>
                 <p className="text-gray-600">{partner.subject}</p>
-                <p className="text-gray-500 text-sm mb-2">{partner.skill}</p>
+                <p className="text-gray-500 text-sm mb-2">
+                  {partner.studyMode}
+                </p>
                 <div className="flex items-center gap-1 mb-4">
-                  <Star className="w-4 h-4 text-yellow-400" />
                   <span className="text-gray-700 font-medium">
-                    {partner.rating}
+                    {partner.experienceLevel}
                   </span>
                 </div>
                 <Link
