@@ -1,37 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import Avatar from "../assets/Default_Avatar.jpeg";
-
-const sampleConnections = [
-  {
-    id: 1,
-    name: "Aisha Rahman",
-    profileImage: Avatar,
-    subject: "Mathematics",
-    studyMode: "Online",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    profileImage: Avatar,
-    subject: "English",
-    studyMode: "Offline",
-  },
-  {
-    id: 3,
-    name: "Sara Khan",
-    profileImage: Avatar,
-    subject: "Programming",
-    studyMode: "Online",
-  },
-];
+import { ConnectionAPI } from "../api";
 
 const MyConnections = () => {
-  const [connections, setConnections] = useState(sampleConnections);
+  const [myConnections, setMyConnections] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleDelete = (id) => {
+  useEffect(() => {
+    const getMyConnections = async () => {
+      try {
+        const res = await ConnectionAPI.getConnectionList();
+        setMyConnections(res.data.connected);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getMyConnections();
+  }, []);
+  // console.log(myConnections);
+
+  const handleDelete = (_id) => {
     if (window.confirm("Are you sure you want to delete this connection?")) {
-      setConnections((prev) => prev.filter((c) => c.id !== id));
+      setMyConnections((prev) => prev.filter((c) => c.connected._id !== _id));
     }
   };
 
@@ -40,10 +33,10 @@ const MyConnections = () => {
   };
 
   return (
-    <div className="py-12 bg-gray-50 min-h-screen">
+    <div className="py-12 bg-gray-50 min-h-[70vh]">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <h2 className="text-3xl font-bold text-blue-600 mb-8 text-center">
-          My Connections (whom i have requested to study with)
+          My Connections
         </h2>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -57,42 +50,58 @@ const MyConnections = () => {
               </tr>
             </thead>
             <tbody>
-              {connections.map((conn) => (
-                <tr key={conn.id} className="hover:bg-gray-100 transition">
-                  <td className="px-4 py-3 flex items-center gap-3">
-                    <img
-                      src={conn.profileImage}
-                      alt={conn.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <span className="font-medium text-gray-800">
-                      {conn.name}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">{conn.subject}</td>
-                  <td className="px-4 py-3 text-gray-700">{conn.studyMode}</td>
-                  <td className="px-4 py-3 flex justify-center gap-2">
-                    <button
-                      onClick={() => handleUpdate(conn.id)}
-                      className="flex items-center gap-1 bg-yellow-400 text-white px-3 py-1 rounded-md hover:bg-yellow-500 transition"
+              {loading ? (
+                <div>Loading.....</div>
+              ) : (
+                <>
+                  {myConnections.map((conn) => (
+                    <tr
+                      key={conn.connected._id}
+                      className="hover:bg-gray-100 transition"
                     >
-                      <Pencil className="w-4 h-4" /> Update
-                    </button>
-                    <button
-                      onClick={() => handleDelete(conn.id)}
-                      className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                    >
-                      <Trash2 className="w-4 h-4" /> Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {connections.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="text-center py-6 text-gray-500">
-                    No connections found.
-                  </td>
-                </tr>
+                      <td className="px-4 py-3 flex items-center gap-3">
+                        <img
+                          src={Avatar}
+                          alt={conn.connected.name}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <span className="font-medium text-gray-800">
+                          {conn.connected.name}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-700">
+                        {conn.connected.subject}
+                      </td>
+                      <td className="px-4 py-3 text-gray-700">
+                        {conn.connected.studyMode}
+                      </td>
+                      <td className="px-4 py-3 flex justify-center gap-2">
+                        <button
+                          onClick={() => handleUpdate(conn.connected._id)}
+                          className="flex items-center gap-1 bg-yellow-400 text-white px-3 py-1 rounded-md hover:bg-yellow-500 transition"
+                        >
+                          <Pencil className="w-4 h-4" /> Update
+                        </button>
+                        <button
+                          onClick={() => handleDelete(conn.connected._id)}
+                          className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                        >
+                          <Trash2 className="w-4 h-4" /> Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {myConnections.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="text-center py-6 text-gray-500"
+                      >
+                        No connections found.
+                      </td>
+                    </tr>
+                  )}
+                </>
               )}
             </tbody>
           </table>
