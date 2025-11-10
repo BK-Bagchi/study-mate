@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import Avatar from "../assets/Default_Avatar.jpeg";
-import { ConnectionAPI } from "../api";
+import { ConnectionAPI, ProfileAPI } from "../api";
 import Modal from "../components/Modal";
 import UpdatePartnerProfile from "../forms/UpdatePartnerProfile";
+import { toast } from "react-toastify";
 
 const MyConnections = () => {
   const [myConnections, setMyConnections] = useState([]);
@@ -26,15 +27,22 @@ const MyConnections = () => {
   }, []);
   // console.log(myConnections);
 
-  const handleDelete = (_id) => {
+  const handleDelete = async (_id) => {
     if (window.confirm("Are you sure you want to delete this connection?")) {
-      setMyConnections((prev) => prev.filter((c) => c.connected._id !== _id));
+      try {
+        const res = await ProfileAPI.deleteProfile(_id);
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setMyConnections((prev) => prev.filter((c) => c.connected._id !== _id));
+        toast.success("Connection deleted successfully!");
+      }
     }
   };
 
   const handleUpdate = (_id) => {
     const connection = myConnections.find((c) => c.connected._id === _id);
-    console.log(connection.connected);
     setUpdateConnection(connection.connected);
     setUpdateModal(true);
   };
@@ -63,34 +71,34 @@ const MyConnections = () => {
                 <>
                   {myConnections.map((conn) => (
                     <tr
-                      key={conn.connected._id}
+                      key={conn.connected?._id}
                       className="hover:bg-gray-100 transition"
                     >
                       <td className="px-4 py-3 flex items-center gap-3">
                         <img
                           src={Avatar}
-                          alt={conn.connected.name}
+                          alt={conn.connected?.name}
                           className="w-10 h-10 rounded-full object-cover"
                         />
                         <span className="font-medium text-gray-800">
-                          {conn.connected.name}
+                          {conn.connected?.name}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-gray-700">
-                        {conn.connected.subject}
+                        {conn.connected?.subject}
                       </td>
                       <td className="px-4 py-3 text-gray-700">
-                        {conn.connected.studyMode}
+                        {conn.connected?.studyMode}
                       </td>
                       <td className="px-4 py-3 flex justify-center gap-2">
                         <button
-                          onClick={() => handleUpdate(conn.connected._id)}
+                          onClick={() => handleUpdate(conn.connected?._id)}
                           className="flex items-center gap-1 bg-yellow-400 text-white px-3 py-1 rounded-md hover:bg-yellow-500 transition"
                         >
                           <Pencil className="w-4 h-4" /> Update
                         </button>
                         <button
-                          onClick={() => handleDelete(conn.connected._id)}
+                          onClick={() => handleDelete(conn.connected?._id)}
                           className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
                         >
                           <Trash2 className="w-4 h-4" /> Delete
