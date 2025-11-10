@@ -18,7 +18,15 @@ const Register = () => {
   });
 
   const onRegister = async (data) => {
-    console.log(data);
+    // console.log(data);
+    const { name, email, password, photoURL } = data;
+    try {
+      await registerUser(name, email, password, photoURL);
+      toast.success("Registration successful!");
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
   const handleGoogleLogin = async () => {
     try {

@@ -20,17 +20,19 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password, photoURL) => {
     const user = await registerUser(name, email, password, photoURL);
-    setUser(user);
+    console.log(user);
   };
 
-  const login = async (email, password) => {
-    const user = await loginUser(email, password);
-    setUser(user);
+  const login = async (userEmail, password) => {
+    const user = await loginUser(userEmail, password);
+    // setUser(user);
+    const { accessToken, displayName: name, email, photoURL } = user;
   };
 
   const googleLogin = async () => {
     const user = await loginWithGoogle();
-    setUser(user);
+    console.log(user);
+    const { accessToken, displayName: name, email, photoURL } = user;
   };
 
   const logout = async () => {

@@ -17,7 +17,15 @@ const Login = () => {
       resolver: zodResolver(loginSchema) 
   });
   const onLogin = async (data) => {
-    console.log(data);
+    // console.log(data);
+    const { email, password } = data;
+    try {
+      await login(email, password);
+      toast.success("Login successful!");
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
   const handleGoogleLogin = async () => {
     try {
