@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "../assets/Default_Avatar.jpeg";
 import { ProfileAPI } from "../api";
+import { useAuth } from "../hooks/useAuth";
 
 const FindPartners = () => {
+  const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,9 +26,13 @@ const FindPartners = () => {
     fetchPartners();
   }, []);
   // console.log(partners);
+  // console.log(user);
 
-  const filteredPartners = partners
-    .filter((p) => p.subject.toLowerCase().includes(search.toLowerCase()))
+  const otherPartners = partners.filter((partner) => partner._id !== user._id);
+  const filteredPartners = otherPartners
+    .filter((p) =>
+      (p.subject || "").toLowerCase().includes(search.toLowerCase())
+    )
     .sort((a) => {
       if (!sort) return 0;
       if (sort === "Beginner") return a.experienceLevel === "Beginner" ? -1 : 1;
