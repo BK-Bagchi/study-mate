@@ -25,10 +25,12 @@ const FindPartners = () => {
 
     fetchPartners();
   }, []);
-  // console.log(partners);
+  console.log(partners);
   // console.log(user);
 
-  const otherPartners = partners.filter((partner) => partner._id !== user._id);
+  const otherPartners = partners.filter(
+    (partner) => partner._id !== user._id && partner.studyMode
+  );
   const filteredPartners = otherPartners
     .filter((p) =>
       (p.subject || "").toLowerCase().includes(search.toLowerCase())
