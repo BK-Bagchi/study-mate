@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import Avatar from "../assets/Default_Avatar.jpeg";
 import { ConnectionAPI } from "../api";
+import Modal from "../components/Modal";
+import UpdatePartnerProfile from "../forms/UpdatePartnerProfile";
 
 const MyConnections = () => {
   const [myConnections, setMyConnections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [updateConnection, setUpdateConnection] = useState({});
 
   useEffect(() => {
     const getMyConnections = async () => {
@@ -28,8 +32,11 @@ const MyConnections = () => {
     }
   };
 
-  const handleUpdate = (id) => {
-    alert(`Update functionality for ID: ${id} will be implemented.`);
+  const handleUpdate = (_id) => {
+    const connection = myConnections.find((c) => c.connected._id === _id);
+    console.log(connection.connected);
+    setUpdateConnection(connection.connected);
+    setUpdateModal(true);
   };
 
   return (
@@ -106,6 +113,18 @@ const MyConnections = () => {
             </tbody>
           </table>
         </div>
+        {updateModal && (
+          <Modal
+            render={
+              <UpdatePartnerProfile
+                connection={updateConnection}
+                setMyConnections={setMyConnections}
+                setUpdateModal={setUpdateModal}
+              />
+            }
+            setActiveModal={setUpdateModal}
+          />
+        )}
       </div>
     </div>
   );
