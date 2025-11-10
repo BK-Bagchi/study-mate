@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const issueJWTToken = async (accessToken) => {
     try {
       const res = await AuthAPI.issueToken({ accessToken });
-      return res.data.token;
+      return res.data;
     } catch (error) {
       console.error(error);
     }
@@ -36,17 +36,19 @@ export const AuthProvider = ({ children }) => {
   const login = async (userEmail, password) => {
     const user = await loginUser(userEmail, password);
     const { accessToken, displayName: name, email, photoURL } = user;
-    const token = await issueJWTToken(accessToken);
-    localStorage.setItem("token", token);
-    setUser({ name, email, photoURL });
+    const res = await issueJWTToken(accessToken);
+    const { _id } = res.user;
+    localStorage.setItem("token", res.token);
+    setUser({ _id, name, email, photoURL });
   };
 
   const googleLogin = async () => {
     const user = await loginWithGoogle();
     const { accessToken, displayName: name, email, photoURL } = user;
-    const token = await issueJWTToken(accessToken);
-    localStorage.setItem("token", token);
-    setUser({ name, email, photoURL });
+    const res = await issueJWTToken(accessToken);
+    const { _id } = res.user;
+    localStorage.setItem("token", res.token);
+    setUser({ _id, name, email, photoURL });
   };
 
   const logout = async () => {
