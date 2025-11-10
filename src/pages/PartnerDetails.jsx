@@ -1,24 +1,50 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Star } from "lucide-react";
 import Avatar from "../assets/Default_Avatar.jpeg";
-
-const samplePartner = {
-  id: 1,
-  name: "Aisha Rahman",
-  profileImage: Avatar,
-  subject: "Mathematics",
-  studyMode: "Online",
-  availabilityTime: "Evening 6–9 PM",
-  location: "Dhaka, Bangladesh",
-  experienceLevel: "Intermediate",
-  rating: 4.5,
-  partnerCount: 3,
-};
+import { ConnectionAPI, ProfileAPI } from "../api";
+import { useAuth } from "../hooks/useAuth";
 
 const PartnerDetails = () => {
-  const partner = samplePartner;
+  const { user } = useAuth();
+  const { id } = useParams();
+  const [partner, setPartner] = useState({});
+  const [partnerCount, setPartnerCount] = useState(0);
+  // const [loading, setLoading] = useState(true);
+  const [connectedList, setConnectedList] = useState([]);
+  const connected = connectedList.some((c) => c.connected._id == id);
 
-  const handleSendRequest = () => {
-    alert(`Partner request sent to ${partner.name}`);
+  useEffect(() => {
+    const fetchMyPartner = async () => {
+      try {
+        const res = await ProfileAPI.getProfileById(id);
+        setPartner(res.data.profile);
+        setPartnerCount(res.data.profile.partnerCount);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchMyPartner();
+  }, [id]);
+
+  const handleSendRequest = async () => {
+    const { _id: connectedId } = partner;
+    const { email: profileEmail } = user;
+
+    try {
+      const res = await ConnectionAPI.makeConnection({
+        connectedId,
+        profileEmail,
+      });
+
+      setConnectedList(res.data.connected);
+      setPartnerCount(partnerCount + 1);
+      toast.success("Request sent successfully!");
+    } catch (error) {
+      toast.error("Error sending partner request");
+      console.error(error);
+    }
   };
 
   return (
@@ -28,7 +54,7 @@ const PartnerDetails = () => {
           {/* Left: Image */}
           <div className="md:w-1/3 w-full">
             <img
-              src={partner.profileImage}
+              src={Avatar}
               alt={partner.name}
               className="w-full h-full object-cover"
             />
@@ -69,7 +95,7 @@ const PartnerDetails = () => {
               </p>
               <p className="text-gray-700 mb-2">
                 <span className="font-semibold">Partner Count:</span>{" "}
-                {partner.partnerCount}
+                {partnerCount}
               </p>
             </div>
 
@@ -77,8 +103,9 @@ const PartnerDetails = () => {
               <button
                 onClick={handleSendRequest}
                 className="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition"
+                disabled={connected}
               >
-                Send Partner Request
+                {connected ? "Partner Connected" : "Send Partner Request"}
               </button>
             </div>
           </div>
