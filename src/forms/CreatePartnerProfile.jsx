@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { partnerSchema } from "../validations/partnerValidation";
+import { ProfileAPI } from "../api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CreatePartnerProfile = () => {
+  const navigate = useNavigate();
   //prettier-ignore
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset} = useForm({
     resolver: zodResolver(partnerSchema),
@@ -14,9 +18,18 @@ const CreatePartnerProfile = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      const res = await ProfileAPI.createProfile(data);
+      console.log(res);
+      toast.success("Partner profile created successfully!");
+      navigate("/find-partners");
+    } catch (error) {
+      console.error("Error creating partner profile:", error);
+      toast.error("Error creating partner profile");
+    } finally {
+      reset();
+    }
   };
 
   return (
