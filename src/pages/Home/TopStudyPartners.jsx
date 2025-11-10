@@ -24,7 +24,7 @@ const TopStudyPartners = () => {
   // console.log(partners);
 
   const filteredPartners = partners.filter(
-    (partner) => partner._id !== user._id && partner.studyMode
+    (partner) => partner?._id !== user._id && partner.studyMode
   );
 
   return (
