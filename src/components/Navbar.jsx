@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { UserPlus, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
@@ -27,12 +27,12 @@ const LoggedInItems = ({
   handleLogout,
 }) => (
   <div className="flex md:flex-row flex-col md:items-center items-start gap-3 relative">
-    <Link
+    <NavLink
       to="/my-connections"
       className="text-gray-700 font-medium hover:text-blue-600 transition"
     >
       My Connections
-    </Link>
+    </NavLink>
 
     <Link
       to="/create-partner-profile"
@@ -78,20 +78,20 @@ const LoggedInItems = ({
 const NavItems = () => (
   <>
     <li>
-      <Link
+      <NavLink
         to="/"
         className="font-medium text-gray-700 hover:text-blue-600 transition"
       >
         Home
-      </Link>
+      </NavLink>
     </li>
     <li>
-      <Link
+      <NavLink
         to="/find-partners"
         className="font-medium text-gray-700 hover:text-blue-600 transition"
       >
         Find Partners
-      </Link>
+      </NavLink>
     </li>
   </>
 );
