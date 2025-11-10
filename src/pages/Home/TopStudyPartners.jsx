@@ -23,9 +23,11 @@ const TopStudyPartners = () => {
   }, []);
   // console.log(partners);
 
-  const filteredPartners = partners.filter(
-    (partner) => partner?._id !== user._id && partner.studyMode
-  );
+  const filteredPartners = user
+    ? partners.filter(
+        (partner) => partner && partner._id !== user._id && partner.studyMode
+      )
+    : partners.filter((partner) => partner && partner.studyMode);
 
   return (
     <section className="py-12 bg-gray-50">
