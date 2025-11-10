@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Avatar from "../assets/Default_Avatar.jpeg";
 import { ProfileAPI } from "../api";
 import { useAuth } from "../hooks/useAuth";
+import PartnerCard from "../components/PartnerCard";
 
 const FindPartners = () => {
   const { user } = useAuth();
@@ -25,7 +24,7 @@ const FindPartners = () => {
 
     fetchPartners();
   }, []);
-  console.log(partners);
+  // console.log(partners);
   // console.log(user);
 
   const otherPartners = partners.filter(
@@ -51,7 +50,6 @@ const FindPartners = () => {
           Find Your Study Partner
         </h2>
 
-        {/* Search & Sort */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <select
             value={sort}
@@ -75,42 +73,12 @@ const FindPartners = () => {
           />
         </div>
 
-        {/* Partner Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {loading ? (
             <div className="text-[red]">Loading....</div>
           ) : (
             filteredPartners.map((partner) => (
-              <div
-                key={partner._id}
-                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform hover:scale-105 transition"
-              >
-                <img
-                  src={Avatar}
-                  alt={partner.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    {partner.name}
-                  </h3>
-                  <p className="text-gray-600">{partner.subject}</p>
-                  <p className="text-gray-500 text-sm mb-2">
-                    {partner.studyMode}
-                  </p>
-                  <div className="flex items-center gap-1 mb-4">
-                    <span className="text-gray-700 font-medium">
-                      {partner.experienceLevel}
-                    </span>
-                  </div>
-                  <Link
-                    to={`/partner/${partner._id}`}
-                    className="block text-center bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition"
-                  >
-                    View Profile
-                  </Link>
-                </div>
-              </div>
+              <PartnerCard key={partner._id} partner={partner} />
             ))
           )}
         </div>
