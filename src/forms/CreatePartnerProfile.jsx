@@ -1,28 +1,22 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { partnerSchema } from "../validations/partnerValidation";
 
 const CreatePartnerProfile = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    profileImage: "",
-    subject: "",
-    studyMode: "Online",
-    availability: "",
-    location: "",
-    experienceLevel: "Beginner",
-    rating: 0,
-    partnerCount: 0,
+  //prettier-ignore
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset} = useForm({
+    resolver: zodResolver(partnerSchema),
+    defaultValues: {
+      studyMode: "Online",
+      experienceLevel: "Beginner",
+      rating: 0,
+      partnerCount: 0,
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Submit formData to backend
-    console.log(formData);
+  const onSubmit = (data) => {
+    console.log(data);
+    reset();
   };
 
   return (
@@ -32,20 +26,21 @@ const CreatePartnerProfile = () => {
           Create Partner Profile
         </h2>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label className="block text-gray-700 font-medium mb-1">
               Full Name
             </label>
             <input
               type="text"
-              name="name"
+              {...register("name")}
               placeholder="Your full name"
-              value={formData.name}
-              onChange={handleChange}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
           </div>
 
           <div>
@@ -54,12 +49,13 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="email"
-              name="email"
+              {...register("email")}
               placeholder="you@example.com"
-              onChange={handleChange}
-              value={formData.email}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -68,12 +64,13 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="url"
-              name="profileImage"
-              placeholder="https://example.com/photo.jpg"
-              value={formData.profileImage}
-              onChange={handleChange}
+              {...register("photoURL")}
+              placeholder={"https://example.com/photo.jpg"}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            {errors.photoURL && (
+              <p className="text-red-500 text-sm">{errors.photoURL.message}</p>
+            )}
           </div>
 
           <div>
@@ -82,13 +79,14 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="text"
-              name="subject"
+              {...register("subject")}
               placeholder="e.g., Mathematics, Programming"
-              value={formData.subject}
-              onChange={handleChange}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+            {errors.subject && (
+              <p className="text-red-500 text-sm">{errors.subject.message}</p>
+            )}
           </div>
 
           <div>
@@ -96,14 +94,15 @@ const CreatePartnerProfile = () => {
               Study Mode
             </label>
             <select
-              name="studyMode"
-              value={formData.studyMode}
-              onChange={handleChange}
+              {...register("studyMode")}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
             </select>
+            {errors.studyMode && (
+              <p className="text-red-500 text-sm">{errors.studyMode.message}</p>
+            )}
           </div>
 
           <div>
@@ -112,12 +111,15 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="text"
-              name="availability"
+              {...register("availabilityTime")}
               placeholder="Evening 6-9 PM"
-              value={formData.availability}
-              onChange={handleChange}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            {errors.availabilityTime && (
+              <p className="text-red-500 text-sm">
+                {errors.availabilityTime.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -126,12 +128,13 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="text"
-              name="location"
+              {...register("location")}
               placeholder="City, Area or Preferred Location"
-              value={formData.location}
-              onChange={handleChange}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+            {errors.location && (
+              <p className="text-red-500 text-sm">{errors.location.message}</p>
+            )}
           </div>
 
           <div>
@@ -139,15 +142,18 @@ const CreatePartnerProfile = () => {
               Experience Level
             </label>
             <select
-              name="experienceLevel"
-              value={formData.experienceLevel}
-              onChange={handleChange}
+              {...register("experienceLevel")}
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="Beginner">Beginner</option>
               <option value="Intermediate">Intermediate</option>
               <option value="Expert">Expert</option>
             </select>
+            {errors.experienceLevel && (
+              <p className="text-red-500 text-sm">
+                {errors.experienceLevel.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -156,13 +162,15 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="number"
-              name="rating"
-              value={formData.rating}
-              onChange={handleChange}
+              {...register("rating")}
+              placeholder="e.g., 4.5"
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               min="0"
               max="5"
             />
+            {errors.rating && (
+              <p className="text-red-500 text-sm">{errors.rating.message}</p>
+            )}
           </div>
 
           <div>
@@ -171,8 +179,8 @@ const CreatePartnerProfile = () => {
             </label>
             <input
               type="number"
-              name="partnerCount"
-              value={formData.partnerCount}
+              {...register("partnerCount")}
+              placeholder="e.g., 10"
               readOnly
               className="w-full px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md bg-gray-100 cursor-not-allowed"
             />
@@ -182,7 +190,7 @@ const CreatePartnerProfile = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition"
           >
-            Create Profile
+            {isSubmitting ? "Creating..." : "Create Partner Profile"}
           </button>
         </form>
       </div>
