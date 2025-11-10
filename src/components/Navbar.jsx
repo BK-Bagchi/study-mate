@@ -1,7 +1,80 @@
 import { Link } from "react-router-dom";
 import { UserPlus, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
+const GeneralItems = ({ handleLogout }) => (
+  <>
+    <Link
+      to="/login"
+      className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition"
+      onClick={handleLogout}
+    >
+      Login
+    </Link>
+    <Link
+      to="/register"
+      className="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
+    >
+      Register
+    </Link>
+  </>
+);
+const LoggedInItems = ({
+  dropdownOpen,
+  setDropdownOpen,
+  user,
+  handleLogout,
+}) => (
+  <div className="flex md:flex-row flex-col md:items-center items-start gap-3 relative">
+    <Link
+      to="/my-connections"
+      className="text-gray-700 font-medium hover:text-blue-600 transition"
+    >
+      My Connections
+    </Link>
+
+    <Link
+      to="/create-partner-profile"
+      className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
+    >
+      <UserPlus className="w-4 h-4" />
+      Create Partner
+    </Link>
+
+    <div className="relative">
+      <button
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="flex items-center gap-1 border border-gray-300 rounded-full p-1 focus:outline-none"
+      >
+        <img
+          src={user?.photoURL || "https://i.ibb.co/3c0L0NK/default-avatar.png"}
+          alt="avatar"
+          className="w-8 h-8 rounded-full object-cover"
+        />
+        <ChevronDown className="w-4 h-4 text-gray-700" />
+      </button>
+
+      {dropdownOpen && (
+        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50">
+          <Link
+            to="/profile"
+            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition"
+            onClick={() => setDropdownOpen(false)}
+          >
+            Profile
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-red-100 transition"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+);
 const NavItems = () => (
   <>
     <li>
@@ -23,13 +96,12 @@ const NavItems = () => (
   </>
 );
 
-const Navbar = ({ user }) => {
-  const [loggedIn, setLoggedIn] = useState(true);
+const Navbar = () => {
+  const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
-    console.log("Logout clicked");
-    setLoggedIn(!loggedIn);
+    logout();
   };
 
   return (
@@ -63,19 +135,13 @@ const Navbar = ({ user }) => {
             <ul className="absolute right-0 mt-3 bg-white border border-gray-200 rounded-lg shadow-lg w-48 p-3 space-y-2">
               <NavItems />
               <div className="flex flex-col gap-2 mt-2">
-                <Link
-                  to="/login"
-                  className="w-full text-center border border-blue-600 text-blue-600 py-1.5 rounded-md font-medium hover:bg-blue-50 transition"
-                  onClick={handleLogout}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="w-full text-center bg-blue-600 text-white py-1.5 rounded-md font-medium hover:bg-blue-700 transition"
-                >
-                  Register
-                </Link>
+                {user ? (
+                  <LoggedInItems
+                    {...{ dropdownOpen, setDropdownOpen, user, handleLogout }}
+                  />
+                ) : (
+                  <GeneralItems handleLogout={handleLogout} />
+                )}
               </div>
             </ul>
           </details>
@@ -85,77 +151,13 @@ const Navbar = ({ user }) => {
           <ul className="flex space-x-6 items-center">
             <NavItems />
           </ul>
-          {loggedIn ? (
-            <div className="flex items-center gap-3 relative">
-              {/* My Connections */}
-              <Link
-                to="/my-connections"
-                className="text-gray-700 font-medium hover:text-blue-600 transition"
-              >
-                My Connections
-              </Link>
-
-              {/* Create Partner Profile */}
-              <Link
-                to="/create-partner-profile"
-                className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
-              >
-                <UserPlus className="w-4 h-4" />
-                Create Partner Profile
-              </Link>
-
-              {/* User Avatar */}
-              <div className="relative">
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-1 border border-gray-300 rounded-full p-1 focus:outline-none"
-                >
-                  <img
-                    src={
-                      user?.photoURL ||
-                      "https://i.ibb.co/3c0L0NK/default-avatar.png"
-                    }
-                    alt="avatar"
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <ChevronDown className="w-4 h-4 text-gray-700" />
-                </button>
-
-                {/* Dropdown */}
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      Profile
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-red-100 transition"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+          {user ? (
+            <LoggedInItems
+              {...{ dropdownOpen, setDropdownOpen, user, handleLogout }}
+            />
           ) : (
             <div className="flex items-center gap-3">
-              <Link
-                to="/login"
-                className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition"
-                onClick={handleLogout}
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition"
-              >
-                Register
-              </Link>
+              <GeneralItems handleLogout={handleLogout} />
             </div>
           )}
         </div>
