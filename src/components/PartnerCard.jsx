@@ -6,11 +6,12 @@ const PartnerCard = ({ partner, theme }) => {
   return (
     <div
       key={partner._id}
-      className={`transition-all duration-300 rounded-xl overflow-hidden shadow-sm border ${
-        theme
-          ? "bg-white border-gray-200 hover:shadow-md hover:border-blue-200"
-          : "bg-gray-800 border-gray-700 hover:shadow-md hover:border-blue-400"
-      }`}
+      className={`transition-all duration-300 rounded-xl overflow-hidden shadow-sm border bg-white/10 backdrop-blur-lg p-6 
+               hover:shadow-2xl transform hover:-translate-y-2 ${
+                 theme
+                   ? "bg-white border-gray-200 hover:shadow-md hover:border-blue-200"
+                   : "bg-gray-800 border-gray-700 hover:shadow-md hover:border-blue-400"
+               }`}
     >
       <img
         src={partner.photoURL || Avatar}
