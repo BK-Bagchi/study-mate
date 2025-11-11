@@ -29,7 +29,6 @@ const PartnerDetails = () => {
       try {
         const res = await ConnectionAPI.getConnectionList();
         setConnectedList(res.data.connected);
-        setPartnerCount(partnerCount + 1);
       } catch (error) {
         console.error(error);
       }

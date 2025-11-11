@@ -22,7 +22,7 @@ const UpdatePartnerProfile = ({
         location: connection.location,
         experienceLevel: connection.experienceLevel,
         rating: connection.rating,
-        partnerCount: connection.partnerCount+1,
+        partnerCount: connection.partnerCount,
     },
   });
 
