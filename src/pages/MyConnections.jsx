@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
 import Avatar from "../assets/Default_Avatar.jpeg";
 import { ConnectionAPI, ProfileAPI } from "../api";
 import Modal from "../components/Modal";
 import UpdatePartnerProfile from "../forms/UpdatePartnerProfile";
-import { toast } from "react-toastify";
+import { useTheme } from "../hooks/useTheme";
 
 const MyConnections = () => {
+  const { theme } = useTheme();
   const [myConnections, setMyConnections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updateModal, setUpdateModal] = useState(false);
@@ -48,15 +50,31 @@ const MyConnections = () => {
   };
 
   return (
-    <div className="py-12 bg-gray-50 min-h-[70vh]">
+    <div
+      className={`py-12 min-h-[70vh] transition ${
+        theme ? "bg-gray-50" : "bg-gray-900"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <h2 className="text-3xl font-bold text-blue-600 mb-8 text-center">
+        <h2
+          className={`text-3xl font-bold mb-8 text-center transition ${
+            theme ? "text-blue-600" : "text-blue-400"
+          }`}
+        >
           My Connections
         </h2>
 
-        <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+        <div
+          className={`overflow-x-auto shadow-md rounded-lg transition ${
+            theme ? "bg-white" : "bg-gray-800"
+          }`}
+        >
           <table className="min-w-full table-auto">
-            <thead className="bg-blue-600 text-white">
+            <thead
+              className={`transition ${
+                theme ? "bg-blue-600 text-white" : "bg-blue-500 text-gray-100"
+              }`}
+            >
               <tr>
                 <th className="px-4 py-2 text-left">Partner</th>
                 <th className="px-4 py-2 text-left">Subject</th>
@@ -66,13 +84,24 @@ const MyConnections = () => {
             </thead>
             <tbody>
               {loading ? (
-                <div>Loading.....</div>
+                <tr>
+                  <td
+                    colSpan={4}
+                    className={`text-center py-6 transition ${
+                      theme ? "text-gray-500" : "text-gray-300"
+                    }`}
+                  >
+                    Loading.....
+                  </td>
+                </tr>
               ) : (
                 <>
                   {myConnections.map((conn) => (
                     <tr
                       key={conn.connected?._id}
-                      className="hover:bg-gray-100 transition"
+                      className={`transition hover:${
+                        theme ? "bg-gray-100" : "bg-gray-700"
+                      }`}
                     >
                       <td className="px-4 py-3 flex items-center gap-3">
                         <img
@@ -80,14 +109,26 @@ const MyConnections = () => {
                           alt={conn.connected?.name}
                           className="w-10 h-10 rounded-full object-cover"
                         />
-                        <span className="font-medium text-gray-800">
+                        <span
+                          className={`font-medium transition ${
+                            theme ? "text-gray-800" : "text-gray-100"
+                          }`}
+                        >
                           {conn.connected?.name}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-gray-700">
+                      <td
+                        className={`px-4 py-3 transition ${
+                          theme ? "text-gray-700" : "text-gray-300"
+                        }`}
+                      >
                         {conn.connected?.subject}
                       </td>
-                      <td className="px-4 py-3 text-gray-700">
+                      <td
+                        className={`px-4 py-3 transition ${
+                          theme ? "text-gray-700" : "text-gray-300"
+                        }`}
+                      >
                         {conn.connected?.studyMode}
                       </td>
                       <td className="px-4 py-3 flex justify-center gap-2">
@@ -109,8 +150,10 @@ const MyConnections = () => {
                   {myConnections.length === 0 && (
                     <tr>
                       <td
-                        colSpan={5}
-                        className="text-center py-6 text-gray-500"
+                        colSpan={4}
+                        className={`text-center py-6 transition ${
+                          theme ? "text-gray-500" : "text-gray-300"
+                        }`}
                       >
                         No connections found.
                       </td>
