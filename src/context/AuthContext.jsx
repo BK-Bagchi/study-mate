@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
     const res = await issueJWTToken(accessToken);
     const { _id } = res.user;
     localStorage.setItem("token", res.token);
+    localStorage.setItem("userId", _id);
     setUser({ _id, name, email, photoURL });
   };
 
@@ -49,6 +50,7 @@ export const AuthProvider = ({ children }) => {
     const res = await issueJWTToken(accessToken);
     const { _id } = res.user;
     localStorage.setItem("token", res.token);
+    localStorage.setItem("userId", _id);
     setUser({ _id, name, email, photoURL });
   };
 

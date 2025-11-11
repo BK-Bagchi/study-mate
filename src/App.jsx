@@ -14,6 +14,7 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import PrivateRoute from "./routes/privateRoute.jsx";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import UserProfile from "./pages/UserProfile.jsx";
 const Layout = () => {
   return (
     <>
@@ -38,6 +39,7 @@ function App() {
               <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
               <Route path="/my-connections" element={<MyConnections />} />
               <Route path="/partner/:id" element={<PartnerDetails />} />
+              <Route path="/profile" element={<UserProfile />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Route>
