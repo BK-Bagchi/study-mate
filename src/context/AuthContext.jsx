@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password, photoURL) => {
     const user = await registerUser(name, email, password, photoURL);
     console.log(user);
+    await login(email, password);
   };
 
   const login = async (userEmail, password) => {
