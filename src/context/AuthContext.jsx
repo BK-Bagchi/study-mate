@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
       setUser({ name, email, photoURL });
       setLoading(false);
     });
+    setLoading(false);
     return () => unsubscribe();
   }, []);
 

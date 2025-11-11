@@ -27,9 +27,11 @@ const FindPartners = () => {
   // console.log(partners);
   // console.log(user);
 
-  const otherPartners = partners.filter(
-    (partner) => partner._id !== user._id && partner.studyMode
-  );
+  const otherPartners = user
+    ? partners.filter(
+        (partner) => partner && partner._id !== user._id && partner.studyMode
+      )
+    : partners.filter((partner) => partner && partner.studyMode);
   const filteredPartners = otherPartners
     .filter((p) =>
       (p.subject || "").toLowerCase().includes(search.toLowerCase())

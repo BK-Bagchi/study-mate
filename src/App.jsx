@@ -30,10 +30,10 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/find-partners" element={<FindPartners />} />
           <Route element={<PrivateRoute />}>
             {/* prettier-ignore */}
             <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
-            <Route path="/find-partners" element={<FindPartners />} />
             <Route path="/my-connections" element={<MyConnections />} />
             <Route path="/partner/:id" element={<PartnerDetails />} />
           </Route>
