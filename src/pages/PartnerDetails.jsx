@@ -76,7 +76,7 @@ const PartnerDetails = () => {
           >
             <div className="md:w-1/3 w-full">
               <img
-                src={Avatar}
+                src={partner.avatar || Avatar}
                 alt={partner.name}
                 className="w-full h-full object-cover"
               />

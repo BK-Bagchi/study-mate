@@ -73,7 +73,7 @@ const LoggedInItems = ({
         }`}
       >
         <img
-          src={user?.photoURL || "https://i.ibb.co/3c0L0NK/default-avatar.png"}
+          src={user?.photoURL}
           alt="avatar"
           className="w-8 h-8 rounded-full object-cover"
         />

@@ -14,7 +14,7 @@ const PartnerCard = ({ partner, theme }) => {
                }`}
     >
       <img
-        src={partner.photoURL || Avatar}
+        src={partner.avatar || Avatar}
         alt={partner.name}
         className="w-full h-48 object-cover"
       />

@@ -101,7 +101,7 @@ const MyConnections = () => {
                     >
                       <td className="px-4 py-3 flex items-center gap-3">
                         <img
-                          src={Avatar}
+                          src={conn.connected?.avatar || Avatar}
                           alt={conn.connected?.name}
                           className="w-10 h-10 rounded-full object-cover"
                         />
