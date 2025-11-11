@@ -27,10 +27,12 @@ const TopStudyPartners = () => {
   // console.log(partners);
 
   const filteredPartners = user
-    ? partners.filter(
-        (partner) => partner && partner._id !== user._id && partner.studyMode
-      )
-    : partners.filter((partner) => partner && partner.studyMode);
+    ? partners
+        .filter(
+          (partner) => partner && partner._id !== user._id && partner.studyMode
+        )
+        .slice(0, 3)
+    : partners.filter((partner) => partner && partner.studyMode).slice(0, 3);
 
   return (
     <section
