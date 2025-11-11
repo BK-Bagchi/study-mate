@@ -3,13 +3,14 @@ import { ProfileAPI } from "../api";
 import { useAuth } from "../hooks/useAuth";
 import PartnerCard from "../components/PartnerCard";
 import { useTheme } from "../hooks/useTheme";
+import Loader from "../components/Loader";
 
 const FindPartners = () => {
   const { user } = useAuth();
   const { theme } = useTheme();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [partners, setPartners] = useState([]);
 
   useEffect(() => {
@@ -91,7 +92,11 @@ const FindPartners = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {loading ? (
-            <div className="text-[red]">Loading....</div>
+            <>
+              <div></div>
+              <Loader />
+              <div></div>
+            </>
           ) : (
             filteredPartners.map((partner) => (
               <PartnerCard key={partner._id} partner={partner} theme={theme} />

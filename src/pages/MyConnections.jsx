@@ -6,6 +6,7 @@ import { ConnectionAPI, ProfileAPI } from "../api";
 import Modal from "../components/Modal";
 import UpdatePartnerProfile from "../forms/UpdatePartnerProfile";
 import { useTheme } from "../hooks/useTheme";
+import Loader from "../components/Loader";
 
 const MyConnections = () => {
   const { theme } = useTheme();
@@ -85,13 +86,8 @@ const MyConnections = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td
-                    colSpan={4}
-                    className={`text-center py-6 transition ${
-                      theme ? "text-gray-500" : "text-gray-300"
-                    }`}
-                  >
-                    Loading.....
+                  <td colSpan={4}>
+                    <Loader />
                   </td>
                 </tr>
               ) : (
