@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { ProfileAPI } from "../api";
 import { useAuth } from "../hooks/useAuth";
 import PartnerCard from "../components/PartnerCard";
+import { useTheme } from "../hooks/useTheme";
 
 const FindPartners = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,9 +48,13 @@ const FindPartners = () => {
     });
 
   return (
-    <div className="py-12 bg-gray-50">
+    <div className={`py-12 transition ${theme ? "bg-gray-50" : "bg-gray-900"}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <h2 className="text-3xl font-bold text-blue-600 mb-8 text-center">
+        <h2
+          className={`text-3xl font-bold mb-8 text-center transition ${
+            theme ? "text-blue-600" : "text-blue-400"
+          }`}
+        >
           Find Your Study Partner
         </h2>
 
@@ -56,7 +62,11 @@ const FindPartners = () => {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="px-4 py-2  text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-1/4"
+            className={`px-4 py-2 rounded-md w-full sm:w-1/4 focus:outline-none focus:ring-2 transition ${
+              theme
+                ? "text-gray-700 border border-gray-500 focus:ring-blue-400 bg-white"
+                : "text-gray-100 border border-gray-600 focus:ring-blue-400 bg-gray-800"
+            }`}
           >
             <option className="hidden" value="">
               Sort by Experience
@@ -71,7 +81,11 @@ const FindPartners = () => {
             placeholder="Search by subject..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-4 py-2 text-gray-700 border border-gray-500 focus:border-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-1/2"
+            className={`px-4 py-2 rounded-md w-full sm:w-1/2 focus:outline-none focus:ring-2 transition ${
+              theme
+                ? "text-gray-700 border border-gray-500 focus:ring-blue-400 bg-white"
+                : "text-gray-100 border border-gray-600 focus:ring-blue-400 bg-gray-800"
+            }`}
           />
         </div>
 
@@ -80,7 +94,7 @@ const FindPartners = () => {
             <div className="text-[red]">Loading....</div>
           ) : (
             filteredPartners.map((partner) => (
-              <PartnerCard key={partner._id} partner={partner} />
+              <PartnerCard key={partner._id} partner={partner} theme={theme} />
             ))
           )}
         </div>

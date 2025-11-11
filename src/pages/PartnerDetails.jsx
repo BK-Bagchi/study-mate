@@ -5,9 +5,11 @@ import { Star } from "lucide-react";
 import Avatar from "../assets/Default_Avatar.jpeg";
 import { ConnectionAPI, ProfileAPI } from "../api";
 import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "../hooks/useTheme";
 
 const PartnerDetails = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const { id } = useParams();
   const [partner, setPartner] = useState({});
   const [partnerCount, setPartnerCount] = useState(0);
@@ -57,10 +59,13 @@ const PartnerDetails = () => {
   };
 
   return (
-    <div className="py-32 bg-gray-50">
+    <div className={`py-32 transition ${theme ? "bg-gray-50" : "bg-gray-900"}`}>
       <div className="max-w-4xl mx-auto px-4 md:px-8">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
-          {/* Left: Image */}
+        <div
+          className={`shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row transition ${
+            theme ? "bg-white" : "bg-gray-800"
+          }`}
+        >
           <div className="md:w-1/3 w-full">
             <img
               src={Avatar}
@@ -69,40 +74,71 @@ const PartnerDetails = () => {
             />
           </div>
 
-          {/* Right: Details */}
           <div className="md:w-2/3 w-full p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              <h2
+                className={`text-3xl font-bold mb-2 transition ${
+                  theme ? "text-gray-800" : "text-gray-100"
+                }`}
+              >
                 {partner.name}
               </h2>
               <div className="flex items-center gap-2 mb-4">
                 <Star className="w-5 h-5 text-yellow-400" />
-                <span className="text-gray-700 font-medium">
+                <span
+                  className={`font-medium transition ${
+                    theme ? "text-gray-700" : "text-gray-300"
+                  }`}
+                >
                   {partner.rating}
                 </span>
               </div>
 
-              <p className="text-gray-700 mb-2">
+              <p
+                className={`mb-2 transition ${
+                  theme ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
                 <span className="font-semibold">Subject:</span>{" "}
                 {partner.subject}
               </p>
-              <p className="text-gray-700 mb-2">
+              <p
+                className={`mb-2 transition ${
+                  theme ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
                 <span className="font-semibold">Study Mode:</span>{" "}
                 {partner.studyMode}
               </p>
-              <p className="text-gray-700 mb-2">
+              <p
+                className={`mb-2 transition ${
+                  theme ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
                 <span className="font-semibold">Availability:</span>{" "}
                 {partner.availabilityTime}
               </p>
-              <p className="text-gray-700 mb-2">
+              <p
+                className={`mb-2 transition ${
+                  theme ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
                 <span className="font-semibold">Location:</span>{" "}
                 {partner.location}
               </p>
-              <p className="text-gray-700 mb-2">
+              <p
+                className={`mb-2 transition ${
+                  theme ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
                 <span className="font-semibold">Experience Level:</span>{" "}
                 {partner.experienceLevel}
               </p>
-              <p className="text-gray-700 mb-2">
+              <p
+                className={`mb-2 transition ${
+                  theme ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
                 <span className="font-semibold">Partner Count:</span>{" "}
                 {partnerCount}
               </p>
@@ -111,8 +147,12 @@ const PartnerDetails = () => {
             <div className="mt-6">
               <button
                 onClick={handleSendRequest}
-                className="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition"
                 disabled={connected}
+                className={`w-full md:w-auto px-6 py-3 rounded-md font-medium transition ${
+                  theme
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
               >
                 {connected ? "Partner Connected" : "Send Partner Request"}
               </button>
