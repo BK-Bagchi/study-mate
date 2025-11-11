@@ -2,9 +2,11 @@ import { Link, NavLink } from "react-router-dom";
 import { UserPlus, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import ThemeToggle from "./ThemeToggle";
 
 const GeneralItems = ({ handleLogout }) => (
   <>
+    <ThemeToggle />
     <Link
       to="/login"
       className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition"
@@ -41,6 +43,8 @@ const LoggedInItems = ({
       <UserPlus className="w-4 h-4" />
       Create Partner
     </Link>
+
+    <ThemeToggle />
 
     <div className="relative">
       <button

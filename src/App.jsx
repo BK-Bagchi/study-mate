@@ -13,6 +13,7 @@ import PartnerDetails from "./pages/PartnerDetails.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import PrivateRoute from "./routes/privateRoute.jsx";
 import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 const Layout = () => {
   return (
     <>
@@ -25,33 +26,35 @@ const Layout = () => {
 function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/find-partners" element={<FindPartners />} />
-          <Route element={<PrivateRoute />}>
-            {/* prettier-ignore */}
-            <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
-            <Route path="/my-connections" element={<MyConnections />} />
-            <Route path="/partner/:id" element={<PartnerDetails />} />
+      <ThemeProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/find-partners" element={<FindPartners />} />
+            <Route element={<PrivateRoute />}>
+              {/* prettier-ignore */}
+              <Route path="/create-partner-profile" element={<CreatePartnerProfile />} />
+              <Route path="/my-connections" element={<MyConnections />} />
+              <Route path="/partner/:id" element={<PartnerDetails />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+        </Routes>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+      </ThemeProvider>
     </AuthProvider>
   );
 }
