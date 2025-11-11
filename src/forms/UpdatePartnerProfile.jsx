@@ -27,6 +27,7 @@ const UpdatePartnerProfile = ({
   });
 
   const onSubmit = async (data) => {
+    data.avatar = data.photoURL;
     try {
       const res = await ProfileAPI.updateProfile(connection._id, data);
       const updatedProfile = res.data.profile;
