@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { ProfileAPI } from "../../api";
 import { useAuth } from "../../hooks/useAuth";
 import PartnerCard from "../../components/PartnerCard";
+import { useTheme } from "../../hooks/useTheme";
 
 const TopStudyPartners = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,9 +32,15 @@ const TopStudyPartners = () => {
     : partners.filter((partner) => partner && partner.studyMode);
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section
+      className={`py-12 transition ${theme ? "bg-gray-50" : "bg-gray-900"}`}
+    >
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <h2 className="text-3xl font-bold text-blue-600 mb-8 text-center">
+        <h2
+          className={`text-3xl font-bold mb-8 text-center transition ${
+            theme ? "text-blue-600" : "text-blue-400"
+          }`}
+        >
           Top Study Partners
         </h2>
 
@@ -41,7 +49,7 @@ const TopStudyPartners = () => {
             <div className="text-[red]">Loading....</div>
           ) : (
             filteredPartners.map((partner) => (
-              <PartnerCard key={partner._id} partner={partner} />
+              <PartnerCard key={partner._id} partner={partner} theme={theme} />
             ))
           )}
         </div>
