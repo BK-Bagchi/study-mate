@@ -26,13 +26,24 @@ const TopStudyPartners = () => {
   }, []);
   // console.log(partners);
 
-  const filteredPartners = user
-    ? partners
-        .filter(
-          (partner) => partner && partner._id !== user._id && partner.studyMode
+  const filteredPartners = (() => {
+    const validPartners = user
+      ? partners.filter(
+          (partner) =>
+            partner && partner._id !== user._id && partner.experienceLevel
         )
-        .slice(0, 3)
-    : partners.filter((partner) => partner && partner.studyMode).slice(0, 3);
+      : partners.filter((partner) => partner && partner.experienceLevel);
+
+    const priorityOrder = ["expert", "intermediate", "beginner"];
+    const sortedPartners = validPartners.sort(
+      (a, b) =>
+        priorityOrder.indexOf(a.experienceLevel.toLowerCase()) -
+        priorityOrder.indexOf(b.experienceLevel.toLowerCase())
+    );
+
+    return sortedPartners.slice(0, 5);
+  })();
+  // console.log(filteredPartners);
 
   return (
     <section
