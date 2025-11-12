@@ -7,6 +7,8 @@ import { ConnectionAPI, ProfileAPI } from "../api";
 import { useAuth } from "../hooks/useAuth";
 import { useTheme } from "../hooks/useTheme";
 import Loader from "../components/Loader";
+import Modal from "../components/Modal";
+import MessageBox from "../components/MessageBox";
 
 const PartnerDetails = () => {
   const { user } = useAuth();
@@ -16,7 +18,8 @@ const PartnerDetails = () => {
   const [partnerCount, setPartnerCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [connectedList, setConnectedList] = useState([]);
-  const connected = connectedList.some((c) => c.connected._id == id);
+  const connected = connectedList.some((c) => c.connected?._id == id);
+  const [showMessageBox, setShowMessageBox] = useState(false);
 
   useEffect(() => {
     const fetchMyPartner = async () => {
@@ -60,6 +63,8 @@ const PartnerDetails = () => {
     } catch (error) {
       toast.error("Error sending partner request");
       console.error(error);
+    } finally {
+      setShowMessageBox(false);
     }
   };
 
@@ -154,7 +159,7 @@ const PartnerDetails = () => {
 
               <div className="mt-6">
                 <button
-                  onClick={handleSendRequest}
+                  onClick={() => setShowMessageBox(true)}
                   disabled={connected}
                   className={`w-full md:w-auto px-6 py-3 rounded-md font-medium transition ${
                     theme
@@ -169,6 +174,18 @@ const PartnerDetails = () => {
           </div>
         )}
       </div>
+      {showMessageBox && (
+        <Modal
+          setActiveModal={setShowMessageBox}
+          render={
+            <MessageBox
+              name={partner.name}
+              theme={theme}
+              handleSendRequest={handleSendRequest}
+            />
+          }
+        />
+      )}
     </div>
   );
 };

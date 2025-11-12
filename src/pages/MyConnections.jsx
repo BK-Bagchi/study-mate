@@ -38,14 +38,16 @@ const MyConnections = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setMyConnections((prev) => prev.filter((c) => c.connected._id !== _id));
+        setMyConnections((prev) =>
+          prev.filter((c) => c.connected?._id !== _id)
+        );
         toast.success("Connection deleted successfully!");
       }
     }
   };
 
   const handleUpdate = (_id) => {
-    const connection = myConnections.find((c) => c.connected._id === _id);
+    const connection = myConnections.find((c) => c.connected?._id === _id);
     setUpdateConnection(connection.connected);
     setUpdateModal(true);
   };
