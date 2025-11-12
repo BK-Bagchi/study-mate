@@ -1,6 +1,8 @@
 import { Send } from "lucide-react";
+import { useState } from "react";
 
 const MessageBox = ({ name, theme, handleSendRequest }) => {
+  const [sending, setSending] = useState(false);
   return (
     <div
       className={`flex flex-col gap-3 p-5 border-t rounded-md transition-all duration-300 shadow-sm ${
@@ -28,7 +30,10 @@ const MessageBox = ({ name, theme, handleSendRequest }) => {
       />
 
       <button
-        onClick={handleSendRequest}
+        onClick={() => {
+          setSending(true);
+          handleSendRequest();
+        }}
         className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200 ${
           theme
             ? "bg-blue-600 text-white hover:bg-blue-700 active:scale-95"
@@ -36,7 +41,7 @@ const MessageBox = ({ name, theme, handleSendRequest }) => {
         }`}
       >
         <Send className="w-4 h-4" />
-        <span>Send</span>
+        <span>{sending ? "Sending..." : "Send"}</span>
       </button>
     </div>
   );
